@@ -1,5 +1,4 @@
-﻿using Aula06Agenda.Modelos;
-using Npgsql;
+﻿using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +48,7 @@ namespace Aula06Agenda.Repositorios
         {
 
             // string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";
+            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
             StringBuilder str = new StringBuilder();
             str.AppendLine("update contato set nome = @nome         ");
@@ -88,6 +88,7 @@ namespace Aula06Agenda.Repositorios
 
         public void DeletarContato()
         {
+            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
             string query = "delete from contato where id_contato  = @id;";
 
@@ -115,6 +116,7 @@ namespace Aula06Agenda.Repositorios
 
         public void SelecionarContatos()
         {
+            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
             string query = "select * from contato";
 
