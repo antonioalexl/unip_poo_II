@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             btnInserir = new Button();
+            btnAlterar = new Button();
+            btnDeletar = new Button();
+            btnSelecionar = new Button();
             SuspendLayout();
             // 
             // btnInserir
@@ -41,11 +44,44 @@
             btnInserir.UseVisualStyleBackColor = true;
             btnInserir.Click += btnInserir_Click;
             // 
+            // btnAlterar
+            // 
+            btnAlterar.Location = new Point(335, 271);
+            btnAlterar.Name = "btnAlterar";
+            btnAlterar.Size = new Size(94, 29);
+            btnAlterar.TabIndex = 1;
+            btnAlterar.Text = "Alterar";
+            btnAlterar.UseVisualStyleBackColor = true;
+            btnAlterar.Click += btnAlterar_Click;
+            // 
+            // btnDeletar
+            // 
+            btnDeletar.Location = new Point(458, 271);
+            btnDeletar.Name = "btnDeletar";
+            btnDeletar.Size = new Size(94, 29);
+            btnDeletar.TabIndex = 2;
+            btnDeletar.Text = "Deletar";
+            btnDeletar.UseVisualStyleBackColor = true;
+            btnDeletar.Click += btnDeletar_Click;
+            // 
+            // btnSelecionar
+            // 
+            btnSelecionar.Location = new Point(574, 269);
+            btnSelecionar.Name = "btnSelecionar";
+            btnSelecionar.Size = new Size(94, 29);
+            btnSelecionar.TabIndex = 3;
+            btnSelecionar.Text = "Selecionar";
+            btnSelecionar.UseVisualStyleBackColor = true;
+            btnSelecionar.Click += btnSelecionar_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnSelecionar);
+            Controls.Add(btnDeletar);
+            Controls.Add(btnAlterar);
             Controls.Add(btnInserir);
             Name = "Form1";
             Text = "Form1";
@@ -55,5 +91,8 @@
         #endregion
 
         private Button btnInserir;
+        private Button btnAlterar;
+        private Button btnDeletar;
+        private Button btnSelecionar;
     }
 }

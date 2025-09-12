@@ -14,5 +14,25 @@ namespace Aula06
             ContatoRepositorio contaRepo = new ContatoRepositorio();
             contaRepo.InserirContato();
         }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            ContatoRepositorio contaRepo = new ContatoRepositorio();
+            contaRepo.AlterarContato();
+        }
+
+        private void btnDeletar_Click(object sender, EventArgs e)
+        {
+            ContatoRepositorio contaRepo = new ContatoRepositorio();
+            contaRepo.DeletarContato();
+
+        }
+
+        private void btnSelecionar_Click(object sender, EventArgs e)
+        {
+
+            ContatoRepositorio contaRepo = new ContatoRepositorio();
+            contaRepo.SelecionarContatos();
+        }
     }
 }

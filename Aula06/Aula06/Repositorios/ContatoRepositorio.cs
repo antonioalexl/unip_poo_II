@@ -26,13 +26,15 @@ namespace Aula06Agenda.Repositorios
 
                     using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
-                        command.ExecuteNonQuery();
 
                         command.Parameters.AddWithValue("nome", "Alex Lopes");
                         command.Parameters.AddWithValue("email", "contato@sanklo.com.br");
                         command.Parameters.AddWithValue("telefone", "17993300758");
 
-                       
+                        command.ExecuteNonQuery();
+
+
+
                     }
                     Console.WriteLine("Contato adicionado com sucesso");
                 }
@@ -46,21 +48,12 @@ namespace Aula06Agenda.Repositorios
 
         public void AlterarContato()
         {
-
-            // string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";
             string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
-            StringBuilder str = new StringBuilder();
-            str.AppendLine("update contato set nome = @nome         ");
-            str.AppendLine("                ,email = @email         ");
-            str.AppendLine("                ,telefone = @telefone   ");
-            str.AppendLine("where id_contato = @id                  ");
+            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";      
 
 
 
-
-
-            var temp = str.ToString();
 
             using (var con = new NpgsqlConnection(stringConexao))
             {
@@ -68,12 +61,12 @@ namespace Aula06Agenda.Repositorios
                 {
                     con.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand(str.ToString(), con))
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
                         command.Parameters.AddWithValue("nome", "Antonio Alex Lopes");
                         command.Parameters.AddWithValue("email", "antonio.lopes@docente.unip.br");
                         command.Parameters.AddWithValue("telefone", "(16) 12121211");
-                        command.Parameters.AddWithValue("id", 1);
+                        command.Parameters.AddWithValue("id", 4);
 
                         command.ExecuteNonQuery();
                     }
@@ -101,15 +94,18 @@ namespace Aula06Agenda.Repositorios
 
                     using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
-                        command.Parameters.AddWithValue("id", 1);
+                        command.Parameters.AddWithValue("id", 4);
                         var linhasAfetadas = command.ExecuteNonQuery();
-                        Console.WriteLine("Contato removido com sucesso, linhas removidas: " + linhasAfetadas);
+
+                        MessageBox.Show("Contato removido com sucesso, linhas removidas:" + linhasAfetadas);
 
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro: " + ex.Message);
+                
+                    MessageBox.Show("Erro: " + ex.Message);
+
                 }
             }
         }
@@ -124,19 +120,27 @@ namespace Aula06Agenda.Repositorios
             {
 
                 con.Open();
+                string resultado = "";
                 using (var command = new NpgsqlCommand(query, con))
                 {
                     using (var reader = command.ExecuteReader())
                     {
+
+                        //percorre todas as linhas
                         while (reader.Read())
                         {
+                            //percorre todas as colunas da linha
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
-                                Console.WriteLine("{0}\t", reader[i]);
+                                //Console.WriteLine("{0}\t", reader[i]);
+                                resultado += reader[i] + " ";
+                                //resultado = Environment.NewLine;
 
                             }
+
                             Console.WriteLine();
                         }
+                        MessageBox.Show(resultado);
                     }
                 }
             }
