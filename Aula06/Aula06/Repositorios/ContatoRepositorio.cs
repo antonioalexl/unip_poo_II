@@ -1,6 +1,9 @@
-﻿using Npgsql;
+﻿using Aula06.Modelos;
+using Aula06.Repositorios;
+using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,17 +12,14 @@ namespace Aula06Agenda.Repositorios
 {
     public class ContatoRepositorio
     {
+        string stringConexao = AppSettings.ConnectionString;
 
-
-
-        public void InserirContato()
+        public bool InserirContato(Contato input)
         {
-            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
             string query = "INSERT INTO contato (nome, email, telefone) VALUES (@nome, @email, @telefone);";
             using (var con = new NpgsqlConnection(stringConexao))
             {
 
-                //  var con = new NpgsqlConnection(stringConexao);
                 try
                 {
                     con.Open();
@@ -27,32 +27,26 @@ namespace Aula06Agenda.Repositorios
                     using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
 
-                        command.Parameters.AddWithValue("nome", "Alex Lopes");
-                        command.Parameters.AddWithValue("email", "contato@sanklo.com.br");
-                        command.Parameters.AddWithValue("telefone", "17993300758");
+                        command.Parameters.AddWithValue("nome", input.Nome);
+                        command.Parameters.AddWithValue("email", input.Email);
+                        command.Parameters.AddWithValue("telefone", input.Telefone);
 
                         command.ExecuteNonQuery();
-
-
-
                     }
-                    Console.WriteLine("Contato adicionado com sucesso");
+                    return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Console.WriteLine("Erro: " + ex.Message);
+                    throw;
                 }
-              
+
             }
         }
 
-        public void AlterarContato()
+        public bool AlterarContato(Contato input)
         {
-            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
-            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";      
-
-
+            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";
 
 
             using (var con = new NpgsqlConnection(stringConexao))
@@ -63,25 +57,24 @@ namespace Aula06Agenda.Repositorios
 
                     using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
-                        command.Parameters.AddWithValue("nome", "Antonio Alex Lopes");
-                        command.Parameters.AddWithValue("email", "antonio.lopes@docente.unip.br");
-                        command.Parameters.AddWithValue("telefone", "(16) 12121211");
-                        command.Parameters.AddWithValue("id", 4);
+                        command.Parameters.AddWithValue("nome", input.Nome);
+                        command.Parameters.AddWithValue("email", input.Email);
+                        command.Parameters.AddWithValue("telefone", input.Telefone);
+                        command.Parameters.AddWithValue("id", input.Id_Contato);
 
                         command.ExecuteNonQuery();
                     }
-                    Console.WriteLine("Contato alterado com sucesso");
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro: " + ex.Message);
+                    throw;
                 }
             }
         }
 
         public void DeletarContato()
         {
-            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
             string query = "delete from contato where id_contato  = @id;";
 
@@ -103,7 +96,7 @@ namespace Aula06Agenda.Repositorios
                 }
                 catch (Exception ex)
                 {
-                
+
                     MessageBox.Show("Erro: " + ex.Message);
 
                 }
@@ -112,7 +105,6 @@ namespace Aula06Agenda.Repositorios
 
         public void SelecionarContatos()
         {
-            string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
             string query = "select * from contato";
 
