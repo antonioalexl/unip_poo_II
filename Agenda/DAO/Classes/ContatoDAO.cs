@@ -103,7 +103,34 @@ namespace DAO.Classes
 
         public Contato ObterContatoPorId(int id)
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM contato WHERE id_contato = @id";
+            Contato contato = null;
+
+            using (var con = new NpgsqlConnection(stringConexao))
+            {
+                con.Open();
+
+                using (var command = new NpgsqlCommand(query, con))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) // só espera um registro
+                        {
+                            contato = new Contato
+                            {
+                                Id_Contato = Convert.ToInt32(reader["id_contato"]),
+                                Nome = reader["nome"] != DBNull.Value ? reader["nome"].ToString() : "",
+                                Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
+                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : ""
+                            };
+                        }
+                    }
+                }
+            }
+
+            return contato;
         }
 
         public List<Contato> ObterContatos()
@@ -115,7 +142,7 @@ namespace DAO.Classes
             {
 
                 con.Open();
-                string resultado = "";
+               
                 using (var command = new NpgsqlCommand(query, con))
                 {
                     using (var reader = command.ExecuteReader())
