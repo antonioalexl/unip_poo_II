@@ -13,7 +13,7 @@ namespace DAO.Interfaces
 
         public bool AlterarContato(Contato input);
 
-        public void DeletarContato(int id);
+        public bool DeletarContato(int id);
 
         public List<Contato> ObterContatos();
 

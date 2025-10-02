@@ -42,9 +42,34 @@ namespace DAO.Classes
             }
         }
 
-        public void DeletarContato(int id)
+        public bool DeletarContato(int id)
         {
-            throw new NotImplementedException();
+            string query = "delete from contato where id_contato  = @id;";
+
+
+            using (var con = new NpgsqlConnection(stringConexao))
+            {
+                try
+                {
+                    con.Open();
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, con))
+                    {
+                        command.Parameters.AddWithValue("id", 4);
+                        var linhasAfetadas = command.ExecuteNonQuery();
+                        return linhasAfetadas > 0;
+
+                        
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw (ex);
+
+                }
+            }
         }
 
         public bool InserirContato(Contato input)
@@ -83,7 +108,34 @@ namespace DAO.Classes
 
         public List<Contato> ObterContatos()
         {
-            throw new NotImplementedException();
+            string query = "select * from contato";
+            List<Contato> lstRetorno = new List<Contato>();
+
+            using (var con = new NpgsqlConnection(stringConexao))
+            {
+
+                con.Open();
+                string resultado = "";
+                using (var command = new NpgsqlCommand(query, con))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+
+                        //percorre todas as linhas
+                        while (reader.Read())
+                        {
+                            Contato contato = new Contato();
+                            contato.Id_Contato = Convert.ToInt32(reader["id_contato"]);
+                            contato.Nome = reader["nome"] != DBNull.Value ? reader["nome"].ToString() : "";
+                            contato.Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "";
+                            contato.Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "";
+                            lstRetorno.Add(contato);
+                        }
+                        
+                    }
+                }
+            }
+            return lstRetorno;
         }
     }
 }
