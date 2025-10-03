@@ -11,7 +11,7 @@ namespace DAO.Classes
 {
     public class ContatoDAO : IContatoDAO
     {
-        string stringConexao = "";
+        string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
         public bool AlterarContato(Contato input)
         {
