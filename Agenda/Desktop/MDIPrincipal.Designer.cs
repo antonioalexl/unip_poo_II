@@ -101,7 +101,7 @@
             MainMenuStrip = menuStrip;
             Margin = new Padding(4, 5, 4, 5);
             Name = "MDIPrincipal";
-            Text = "MDIPrincipal";
+            Text = "Agenda";
             WindowState = FormWindowState.Maximized;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();

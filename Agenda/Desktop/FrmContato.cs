@@ -14,14 +14,11 @@ namespace Desktop
 {
     public partial class FrmContato : Form
     {
-        public int Id = 0;
+        private int Id = 0;
 
         public FrmContato()
         {
             InitializeComponent();
-           
-
-
         }
 
         public FrmContato(int? id)
@@ -66,9 +63,7 @@ namespace Desktop
             contato.Email = txtEmail.Text;
             contato.DataNascimento = dtpDataNascimento.Value;
 
-            ContatoDAO dao = new ContatoDAO();
-            dao.Inserir(contato);
-
+            ContatoDAO dao = new ContatoDAO();    
 
             bool retorno = false;
 

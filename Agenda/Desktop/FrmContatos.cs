@@ -51,7 +51,6 @@ namespace Desktop
         }
 
 
-        //            frmContato.FormClosed += FrmContato_FormClosed;
 
         private void dgvContatos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -59,12 +58,9 @@ namespace Desktop
             var idContato = Convert.ToInt32(dgvContatos.Rows[e.RowIndex].Cells[0].Value);
 
             if (e.ColumnIndex == dgvContatos.Columns["Editar"].Index)
-            {
-
-               
+            {               
 
                 FrmContato frmContato = new FrmContato(idContato);
-                frmContato.Id = idContato;
                 frmContato.FormClosed += FrmContato_FormClosed;
                 frmContato.MdiParent = this.MdiParent; // O pai deste formulário atual
                 frmContato.Show();
@@ -96,10 +92,7 @@ namespace Desktop
 
         private void FrmContato_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // aqui você faz o que quiser quando o formulário for fechado
-            MessageBox.Show("Formulário de contato foi fechado!");
-
-            // exemplo: recarregar o DataGridView
+           
             CarregarContatos();
         }
     }
