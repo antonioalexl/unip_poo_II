@@ -9,14 +9,15 @@ namespace DAO.Interfaces
 {
     public interface IContatoDAO
     {
-        public bool InserirContato(Contato input);
+        public bool Inserir(Contato input);
 
-        public bool AlterarContato(Contato input);
+        public bool Alterar(Contato input);
 
-        public bool DeletarContato(int id);
+        public bool Excluir(int id);
 
-        public List<Contato> ObterContatos();
 
-        public Contato ObterContatoPorId(int id);
+        public List<Contato> ObterTodos();
+
+        public Contato ObterPorId(int id);
     }
 }

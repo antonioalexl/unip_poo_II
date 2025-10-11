@@ -15,5 +15,8 @@ namespace Modelos
         public string Email { set; get; }
 
         public string Telefone { set; get; }
+
+        public DateTime? DataNascimento { set; get; }
+
     }
 }

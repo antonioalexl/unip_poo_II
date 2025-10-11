@@ -13,9 +13,9 @@ namespace DAO.Classes
     {
         string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
-        public bool AlterarContato(Contato input)
+        public bool Alterar(Contato input)
         {
-            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone where id_contato = @id  ";
+            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone, data_nascimento = @data_nascimento where id_contato = @id  ";
 
 
             using (var con = new NpgsqlConnection(stringConexao))
@@ -30,6 +30,10 @@ namespace DAO.Classes
                         command.Parameters.AddWithValue("email", input.Email);
                         command.Parameters.AddWithValue("telefone", input.Telefone);
                         command.Parameters.AddWithValue("id", input.Id_Contato);
+                        command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
+
+
+                        
 
                         command.ExecuteNonQuery();
                     }
@@ -42,7 +46,7 @@ namespace DAO.Classes
             }
         }
 
-        public bool DeletarContato(int id)
+        public bool Excluir(int id)
         {
             string query = "delete from contato where id_contato  = @id;";
 
@@ -55,11 +59,10 @@ namespace DAO.Classes
 
                     using (NpgsqlCommand command = new NpgsqlCommand(query, con))
                     {
-                        command.Parameters.AddWithValue("id", 4);
+                        command.Parameters.AddWithValue("id", id);
                         var linhasAfetadas = command.ExecuteNonQuery();
-                        return linhasAfetadas > 0;
 
-                        
+                        return true;
 
                     }
                 }
@@ -67,14 +70,13 @@ namespace DAO.Classes
                 {
 
                     throw (ex);
-
                 }
             }
         }
 
-        public bool InserirContato(Contato input)
+        public bool Inserir(Contato input)
         {
-            string query = "INSERT INTO contato (nome, email, telefone) VALUES (@nome, @email, @telefone);";
+            string query = "INSERT INTO contato (nome, email, telefone,data_nascimento) VALUES (@nome, @email, @telefone, @data_nascimento);";
             using (var con = new NpgsqlConnection(stringConexao))
             {
 
@@ -88,6 +90,9 @@ namespace DAO.Classes
                         command.Parameters.AddWithValue("nome", input.Nome);
                         command.Parameters.AddWithValue("email", input.Email);
                         command.Parameters.AddWithValue("telefone", input.Telefone);
+                        command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
+
+                        
 
                         command.ExecuteNonQuery();
                     }
@@ -101,7 +106,7 @@ namespace DAO.Classes
             }
         }
 
-        public Contato ObterContatoPorId(int id)
+        public Contato ObterPorId(int id)
         {
             string query = "SELECT * FROM contato WHERE id_contato = @id";
             Contato contato = null;
@@ -123,7 +128,8 @@ namespace DAO.Classes
                                 Id_Contato = Convert.ToInt32(reader["id_contato"]),
                                 Nome = reader["nome"] != DBNull.Value ? reader["nome"].ToString() : "",
                                 Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
-                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : ""
+                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "",
+                                 DataNascimento = reader["data_nascimento"] != DBNull.Value ? Convert.ToDateTime(reader["data_nascimento"]) : (DateTime?)null
                             };
                         }
                     }
@@ -133,9 +139,10 @@ namespace DAO.Classes
             return contato;
         }
 
-        public List<Contato> ObterContatos()
+        public List<Contato> ObterTodos()
         {
             string query = "select * from contato";
+
             List<Contato> lstRetorno = new List<Contato>();
 
             using (var con = new NpgsqlConnection(stringConexao))
@@ -151,14 +158,21 @@ namespace DAO.Classes
                         //percorre todas as linhas
                         while (reader.Read())
                         {
+                            //Criar um objeto do tipo contato
                             Contato contato = new Contato();
                             contato.Id_Contato = Convert.ToInt32(reader["id_contato"]);
-                            contato.Nome = reader["nome"] != DBNull.Value ? reader["nome"].ToString() : "";
-                            contato.Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "";
-                            contato.Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "";
+                            contato.Nome = reader["nome"].ToString();
+                            contato.Telefone = reader["telefone"].ToString();
+                            contato.Email = reader["email"].ToString();
+                            contato.DataNascimento = reader["data_nascimento"] != DBNull.Value ? Convert.ToDateTime(reader["data_nascimento"]) : (DateTime?)null;
+
+
+
+                            //adicionar na lista
                             lstRetorno.Add(contato);
+
                         }
-                        
+                      
                     }
                 }
             }
