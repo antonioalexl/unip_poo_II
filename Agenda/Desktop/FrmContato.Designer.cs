@@ -97,6 +97,7 @@
             // txtNome
             // 
             txtNome.Location = new Point(31, 112);
+            txtNome.MaxLength = 255;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(365, 27);
             txtNome.TabIndex = 6;
@@ -104,6 +105,7 @@
             // txtTelefone
             // 
             txtTelefone.Location = new Point(31, 179);
+            txtTelefone.MaxLength = 45;
             txtTelefone.Name = "txtTelefone";
             txtTelefone.Size = new Size(251, 27);
             txtTelefone.TabIndex = 7;
@@ -111,13 +113,14 @@
             // txtEmail
             // 
             txtEmail.Location = new Point(31, 246);
+            txtEmail.MaxLength = 255;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(352, 27);
             txtEmail.TabIndex = 8;
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(100, 376);
+            btnSalvar.Location = new Point(119, 379);
             btnSalvar.Name = "btnSalvar";
             btnSalvar.Size = new Size(109, 54);
             btnSalvar.TabIndex = 10;
@@ -127,7 +130,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(215, 376);
+            btnCancelar.Location = new Point(234, 379);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(111, 54);
             btnCancelar.TabIndex = 11;
@@ -166,6 +169,8 @@
             Load += FrmContato_Load;
             ResumeLayout(false);
             PerformLayout();
+
+
         }
 
         #endregion

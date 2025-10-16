@@ -13,36 +13,73 @@ namespace DAO.Classes
     {
         string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
+
+        private void ValidarRegistro(Contato input)
+        {
+
+            if (string.IsNullOrEmpty(input.Nome))
+            {
+
+                throw new Exception("O telefone não pode ser nulo");
+
+            }
+
+            if (string.IsNullOrEmpty(input.Telefone))
+            {
+
+                throw new Exception("O telefone não pode ser nulo");
+
+            }
+
+
+            if (string.IsNullOrEmpty(input.Email))
+            {
+
+                throw new Exception("O telefone não pode ser nulo");
+
+            }
+        }
         public bool Alterar(Contato input)
         {
-            string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone, data_nascimento = @data_nascimento where id_contato = @id  ";
-
-
-            using (var con = new NpgsqlConnection(stringConexao))
+            try
             {
-                try
-                {
-                    con.Open();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand(query, con))
+                ValidarRegistro(input);
+
+                string query = "update contato set nome = @nome  ,email = @email ,telefone = @telefone, data_nascimento = @data_nascimento where id_contato = @id  ";
+
+
+                using (var con = new NpgsqlConnection(stringConexao))
+                {
+                    try
                     {
-                        command.Parameters.AddWithValue("nome", input.Nome);
-                        command.Parameters.AddWithValue("email", input.Email);
-                        command.Parameters.AddWithValue("telefone", input.Telefone);
-                        command.Parameters.AddWithValue("id", input.Id_Contato);
-                        command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
+                        con.Open();
+
+                        using (NpgsqlCommand command = new NpgsqlCommand(query, con))
+                        {
+                            command.Parameters.AddWithValue("nome", input.Nome);
+                            command.Parameters.AddWithValue("email", input.Email);
+                            command.Parameters.AddWithValue("telefone", input.Telefone);
+                            command.Parameters.AddWithValue("id", input.Id_Contato);
+                            command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
 
 
-                        
 
-                        command.ExecuteNonQuery();
+
+                            command.ExecuteNonQuery();
+                        }
+                        return true;
                     }
-                    return true;
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -76,33 +113,44 @@ namespace DAO.Classes
 
         public bool Inserir(Contato input)
         {
-            string query = "INSERT INTO contato (nome, email, telefone,data_nascimento) VALUES (@nome, @email, @telefone, @data_nascimento);";
-            using (var con = new NpgsqlConnection(stringConexao))
+
+            try
+            {
+                ValidarRegistro(input);
+
+                string query = "INSERT INTO contato (nome, email, telefone,data_nascimento) VALUES (@nome, @email, @telefone, @data_nascimento);";
+                using (var con = new NpgsqlConnection(stringConexao))
+                {
+
+                    try
+                    {
+                        con.Open();
+
+                        using (NpgsqlCommand command = new NpgsqlCommand(query, con))
+                        {
+
+                            command.Parameters.AddWithValue("nome", input.Nome);
+                            command.Parameters.AddWithValue("email", input.Email);
+                            command.Parameters.AddWithValue("telefone", input.Telefone);
+                            command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
+
+
+
+                            command.ExecuteNonQuery();
+                        }
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+
+                }
+            }
+            catch (Exception)
             {
 
-                try
-                {
-                    con.Open();
-
-                    using (NpgsqlCommand command = new NpgsqlCommand(query, con))
-                    {
-
-                        command.Parameters.AddWithValue("nome", input.Nome);
-                        command.Parameters.AddWithValue("email", input.Email);
-                        command.Parameters.AddWithValue("telefone", input.Telefone);
-                        command.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
-
-                        
-
-                        command.ExecuteNonQuery();
-                    }
-                    return true;
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-
+                throw;
             }
         }
 
@@ -129,7 +177,7 @@ namespace DAO.Classes
                                 Nome = reader["nome"] != DBNull.Value ? reader["nome"].ToString() : "",
                                 Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
                                 Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "",
-                                 DataNascimento = reader["data_nascimento"] != DBNull.Value ? Convert.ToDateTime(reader["data_nascimento"]) : (DateTime?)null
+                                DataNascimento = reader["data_nascimento"] != DBNull.Value ? Convert.ToDateTime(reader["data_nascimento"]) : (DateTime?)null
                             };
                         }
                     }
@@ -149,7 +197,7 @@ namespace DAO.Classes
             {
 
                 con.Open();
-               
+
                 using (var command = new NpgsqlCommand(query, con))
                 {
                     using (var reader = command.ExecuteReader())
@@ -172,7 +220,7 @@ namespace DAO.Classes
                             lstRetorno.Add(contato);
 
                         }
-                      
+
                     }
                 }
             }

@@ -19,12 +19,25 @@ namespace Desktop
         public FrmContato()
         {
             InitializeComponent();
+
+            if (this.Id == 0)
+            {
+                lblId.Visible = false;
+                txtId.Visible = false;
+            }
         }
 
         public FrmContato(int? id)
         {
             InitializeComponent();
             this.Id = id ?? 0;
+
+            if (this.Id > 0)
+            {
+                lblId.Visible = true;
+                txtId.Visible = true;
+            }
+
             carregarContato();
 
 
@@ -57,28 +70,39 @@ namespace Desktop
         private void btnSalvar_Click(object sender, EventArgs e)
         {
 
+
+
             Contato contato = new Contato();
             contato.Nome = txtNome.Text;
             contato.Telefone = txtTelefone.Text;
             contato.Email = txtEmail.Text;
             contato.DataNascimento = dtpDataNascimento.Value;
 
-            ContatoDAO dao = new ContatoDAO();    
+            ContatoDAO dao = new ContatoDAO();
 
             bool retorno = false;
 
-            if (this.Id == 0)//Inserir
+            try
             {
-                retorno = dao.Inserir(contato);         
 
+
+                if (this.Id == 0)//Inserir
+                {
+                    retorno = dao.Inserir(contato);
+
+                }
+                else
+                {
+                    contato.Id_Contato = this.Id;
+                    retorno = dao.Alterar(contato);
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                contato.Id_Contato = this.Id;
-                retorno = dao.Alterar(contato);
 
+                MessageBox.Show("Falha ao salvar registro", "Atenção"); 
             }
-
             if (retorno == true)
             {
                 this.Close();
