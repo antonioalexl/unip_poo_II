@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DAO.Classes
@@ -13,22 +14,55 @@ namespace DAO.Classes
     {
         string stringConexao = "Host=localhost;Database=dbAgenda;Username=postgres;Password=123456;";
 
+        public bool SalvarContato(Contato input)
+        {
+            bool retorno = false;
+
+            if (input.Id_Contato == 0)//Inserir
+            {
+                retorno = Inserir(input);
+
+            }
+            else
+            {
+              
+                retorno = Alterar(input);
+
+            }
+            return retorno;
+
+        }
+
 
         private void ValidarRegistro(Contato input)
         {
 
             if (string.IsNullOrEmpty(input.Nome))
             {
-
                 throw new Exception("O telefone não pode ser nulo");
+            }
+            else
+            {
+                if(input.Nome.Length >= 255)
+                {
+                    throw new Exception("O campo nome não pode ter mais do que 255 caracteres");
 
+                }
             }
 
             if (string.IsNullOrEmpty(input.Telefone))
             {
-
                 throw new Exception("O telefone não pode ser nulo");
+            }
+            else
+            {
+                if (input.Telefone.Length > 45)
+                    throw new Exception("O campo telefone não pode ter mais do que 45 caracteres");
 
+                // Validação de formato de telefone (aceita com DDD, espaços, traços e parênteses)
+                var telefoneRegex = new Regex(@"^\+?\d{0,3}?\s?(\(?\d{2,3}\)?)?\s?\d{4,5}-?\d{4}$");
+                if (!telefoneRegex.IsMatch(input.Telefone))
+                    throw new Exception("O formato do telefone é inválido. Exemplo válido: (16) 99999-9999");
             }
 
 
@@ -38,6 +72,25 @@ namespace DAO.Classes
                 throw new Exception("O telefone não pode ser nulo");
 
             }
+            else
+            {
+                if (input.Telefone.Length >= 45)
+                {
+                    throw new Exception("O campo telefone não pode ter mais do que 45 caracteres");
+
+                }
+                // Validação de formato de e-mail
+                var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!emailRegex.IsMatch(input.Email))
+                    throw new Exception("O formato do e-mail é inválido. Exemplo válido: usuario@dominio.com");
+                //validar formato de email
+
+            }
+
+
+
+
+            
         }
         public bool Alterar(Contato input)
         {
@@ -189,7 +242,7 @@ namespace DAO.Classes
 
         public List<Contato> ObterTodos()
         {
-            string query = "select * from contato";
+            string query = "select * from contato order by id_contato";
 
             List<Contato> lstRetorno = new List<Contato>();
 

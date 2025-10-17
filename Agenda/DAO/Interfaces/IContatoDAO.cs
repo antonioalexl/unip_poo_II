@@ -19,5 +19,8 @@ namespace DAO.Interfaces
         public List<Contato> ObterTodos();
 
         public Contato ObterPorId(int id);
+
+
+        public bool SalvarContato(Contato input);
     }
 }

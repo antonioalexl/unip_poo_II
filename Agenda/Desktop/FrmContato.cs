@@ -36,6 +36,7 @@ namespace Desktop
             {
                 lblId.Visible = true;
                 txtId.Visible = true;
+                txtId.ReadOnly = true;
             }
 
             carregarContato();
@@ -51,7 +52,7 @@ namespace Desktop
 
             txtEmail.Text = contato.Email;
             txtNome.Text = contato.Nome;
-            txtTelefone.Text = contato.Telefone;
+            mTxtTelefone.Text = contato.Telefone;
             txtId.Text = contato.Id_Contato.ToString();
             //dtpDataNascimento.Value = contato.DataNascimento == null ? DateTime.MinValue : Convert.ToDateTime(contato.DataNascimento);
 
@@ -70,33 +71,18 @@ namespace Desktop
         private void btnSalvar_Click(object sender, EventArgs e)
         {
 
-
-
             Contato contato = new Contato();
             contato.Nome = txtNome.Text;
-            contato.Telefone = txtTelefone.Text;
+            contato.Telefone = mTxtTelefone.Text;
             contato.Email = txtEmail.Text;
             contato.DataNascimento = dtpDataNascimento.Value;
-
-            ContatoDAO dao = new ContatoDAO();
+            contato.Id_Contato = this.Id;
 
             bool retorno = false;
 
             try
             {
-
-
-                if (this.Id == 0)//Inserir
-                {
-                    retorno = dao.Inserir(contato);
-
-                }
-                else
-                {
-                    contato.Id_Contato = this.Id;
-                    retorno = dao.Alterar(contato);
-
-                }
+                retorno = new ContatoDAO().SalvarContato(contato);
             }
             catch (Exception ex)
             {

@@ -45,7 +45,8 @@ namespace Desktop
         private void btnNovo_Click(object sender, EventArgs e)
         {
             FrmContato frmContato = new FrmContato();
-
+            frmContato.FormClosed += FrmContato_FormClosed;
+            frmContato.MdiParent = this.MdiParent; // O pai deste formulário atual
             frmContato.Show();
          
         }
@@ -91,8 +92,7 @@ namespace Desktop
         }
 
         private void FrmContato_FormClosed(object sender, FormClosedEventArgs e)
-        {
-           
+        {           
             CarregarContatos();
         }
     }
